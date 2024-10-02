@@ -7,6 +7,12 @@
       Create
     </a>
   </h1>
+
+  <form method="GET" action="">
+      <input type="text" name="q" placeholder="Search by car model">
+      <button type="submit">Search</button>
+  </form>
+
   {% if car_list %}
     <ul>
       {% for car in car_list %}
