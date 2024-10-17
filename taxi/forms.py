@@ -26,7 +26,7 @@ class DriverCreationForm(UserCreationForm):
             "last_name",
         )
 
-    def clean_license_number(self):  # this logic is optional, but possible
+    def clean_license_number(self):
         return validate_license_number(self.cleaned_data["license_number"])
 
 
@@ -53,12 +53,25 @@ def validate_license_number(
 
 
 class ManufacturerSearchForm(forms.Form):
-    name = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Search by manufacturer name"}))
+    name = forms.CharField(
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by manufacturer name"}
+        )
+    )
 
 
 class CarSearchForm(forms.Form):
-    model = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Search by car model"}))
+    model = forms.CharField(
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by car model"})
+    )
 
 
 class DriverSearchForm(forms.Form):
-    username = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Search by username"}))
+    username = forms.CharField(
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by username"}
+        )
+    )
