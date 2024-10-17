@@ -8,31 +8,29 @@
     </a>
 </h1>
 
-<form method="GET" action="">
-    {{ form.driver_search_query }}
-    <button type="submit">Search</button>
-</form>
+{% include "taxi/search_form.html" with search_param="driver_search_query" placeholder="Search Drivers" %}
 
 {% if driver_list %}
 <table class="table">
     <tr>
         <th>ID</th>
         <th>Username</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>License number</th>
+        <th>License Number</th>
+        <th>Update</th>
+        <th>Delete</th>
     </tr>
+
     {% for driver in driver_list %}
     <tr>
         <td>{{ driver.id }}</td>
-        <td><a href="{{ driver.get_absolute_url }}">{{ driver.username }} {% if user == driver %} (Me) {% endif %}</a></td>
-        <td>{{ driver.first_name }}</td>
-        <td>{{ driver.last_name }}</td>
+        <td>{{ driver.username }}</td>
         <td>{{ driver.license_number }}</td>
+        <td><a href="{% url 'taxi:driver-update' pk=driver.id %}">Update</a></td>
+        <td><a style="color: red" href="{% url 'taxi:driver-delete' pk=driver.id %}">Delete</a></td>
     </tr>
     {% endfor %}
 </table>
 {% else %}
-<p>There are no drivers in the service.</p>
+<p>No drivers found.</p>
 {% endif %}
 {% endblock %}

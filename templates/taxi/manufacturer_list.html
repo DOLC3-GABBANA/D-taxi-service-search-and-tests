@@ -8,10 +8,7 @@
     </a>
 </h1>
 
-<form method="GET" action="">
-    {{ manufacturer_search_query }}
-    <button type="submit">Search</button>
-</form>
+{% include "taxi/search_form.html" with search_param="manufacturer_search_query" placeholder="Search Manufacturers" %}
 
 {% if manufacturer_list %}
 <table class="table">
