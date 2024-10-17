@@ -8,9 +8,12 @@
     </a>
 </h1>
 
-{% include 'taxi/search_form.html' with placeholder="Search by car model" %}
+<form method="GET" action="">
+    {{ form.q }}
+    <button type="submit">Search</button>
+</form>
 
-  {% if car_list %}
+{% if car_list %}
 <ul>
     {% for car in car_list %}
     <li>
@@ -19,7 +22,7 @@
     </li>
     {% endfor %}
 </ul>
-  {% else %}
+{% else %}
 <p>There are no cars in taxi</p>
-  {% endif %}
+{% endif %}
 {% endblock %}

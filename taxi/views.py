@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
 from taxi.models import Driver, Car, Manufacturer
-from taxi.forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
+from taxi.forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm, SearchForm
 
 
 @login_required
@@ -43,6 +43,11 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
             return Manufacturer.objects.filter(Q(name__icontains=query))
         return Manufacturer.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = SearchForm(self.request.GET or None)
+        return context
+
 
 class ManufacturerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Manufacturer
@@ -71,6 +76,11 @@ class CarListView(LoginRequiredMixin, generic.ListView):
         if query:
             return Car.objects.filter(Q(model__icontains=query))
         return Car.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = SearchForm(self.request.GET or None)
+        return context
 
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
@@ -103,6 +113,11 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
         if query:
             return Driver.objects.filter(Q(username__icontains=query))
         return Driver.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = SearchForm(self.request.GET or None)
+        return context
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
