@@ -53,7 +53,11 @@ def validate_license_number(
 
 
 class SearchForm(forms.Form):
-    search_query = forms.CharField(required=False, label="Search")
+    search_query = forms.CharField(
+        required=False,
+        label="Search",
+        widget=forms.TextInput(attrs={"placeholder": "Search"})
+    )
 
 
 class ManufacturerSearchForm(forms.Form):

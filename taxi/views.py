@@ -1,10 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
 
 from taxi.models import Driver, Car, Manufacturer
 from taxi.forms import (
@@ -21,7 +20,6 @@ from taxi.forms import (
 @login_required
 def index(request):
     """View function for the home page of the site."""
-
     num_drivers = Driver.objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
@@ -47,8 +45,8 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         query = self.request.GET.get("manufacturer_search_query")
         if query:
-            return Manufacturer.objects.filter(name__icontains=query)
-        return Manufacturer.objects.all()
+            return Manufacturer.objects.filter(name__icontains=query).order_by("name")
+        return Manufacturer.objects.all().order_by("name")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,8 +79,8 @@ class CarListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         query = self.request.GET.get("car_search_query")
         if query:
-            return Car.objects.filter(model__icontains=query)
-        return Car.objects.all()
+            return Car.objects.filter(model__icontains=query).order_by("model")
+        return Car.objects.all().order_by("model")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -119,8 +117,8 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         query = self.request.GET.get("driver_search_query")
         if query:
-            return Driver.objects.filter(username__icontains=query)
-        return Driver.objects.all()
+            return Driver.objects.filter(username__icontains=query).order_by("username")
+        return Driver.objects.all().order_by("username")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -151,11 +149,10 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required
 def toggle_assign_to_car(request, pk):
-    driver = Driver.objects.get(id=request.user.id)
-    if (
-        Car.objects.get(id=pk) in driver.cars.all()
-    ):  # probably could check if car exists
-        driver.cars.remove(pk)
+    driver = get_object_or_404(Driver, id=request.user.id)
+    car = get_object_or_404(Car, id=pk)
+    if car in driver.cars.all():
+        driver.cars.remove(car)
     else:
-        driver.cars.add(pk)
+        driver.cars.add(car)
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
