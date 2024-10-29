@@ -57,12 +57,18 @@ class SearchForm(forms.Form):
 
 
 class ManufacturerSearchForm(forms.Form):
-    manufacturer_search_query = forms.CharField(required=False, label="Search Manufacturers")
+    manufacturer_search_query = forms.CharField(
+        required=False, label="Search Manufacturers"
+    )
 
 
 class CarSearchForm(forms.Form):
-    car_search_query = forms.CharField(required=False, label="Search Cars")
+    car_search_query = forms.CharField(
+        required=False, label="Search Cars"
+    )
 
 
 class DriverSearchForm(forms.Form):
-    driver_search_query = forms.CharField(required=False, label="Search Drivers")
+    driver_search_query = forms.CharField(
+        required=False, label="Search Drivers"
+    )
