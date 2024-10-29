@@ -54,3 +54,15 @@ def validate_license_number(
 
 class SearchForm(forms.Form):
     search_query = forms.CharField(required=False, label="Search")
+
+
+class ManufacturerSearchForm(forms.Form):
+    manufacturer_search_query = forms.CharField(required=False, label="Search Manufacturers")
+
+
+class CarSearchForm(forms.Form):
+    car_search_query = forms.CharField(required=False, label="Search Cars")
+
+
+class DriverSearchForm(forms.Form):
+    driver_search_query = forms.CharField(required=False, label="Search Drivers")

@@ -11,7 +11,10 @@ from taxi.forms import (
     DriverCreationForm,
     DriverLicenseUpdateForm,
     CarForm,
-    SearchForm
+    SearchForm,
+    ManufacturerSearchForm,
+    CarSearchForm,
+    DriverSearchForm
 )
 
 
@@ -38,19 +41,18 @@ def index(request):
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
-    context_object_name = "manufacturer_list"
     template_name = "taxi/manufacturer_list.html"
     paginate_by = 5
 
     def get_queryset(self):
         query = self.request.GET.get("manufacturer_search_query")
         if query:
-            return Manufacturer.objects.filter(Q(name__icontains=query))
+            return Manufacturer.objects.filter(name__icontains=query)
         return Manufacturer.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = SearchForm(self.request.GET or None)
+        context["form"] = ManufacturerSearchForm(self.request.GET)
         return context
 
 
@@ -73,18 +75,18 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class CarListView(LoginRequiredMixin, generic.ListView):
     model = Car
+    template_name = "taxi/car_list.html"
     paginate_by = 5
-    queryset = Car.objects.select_related("manufacturer")
 
     def get_queryset(self):
         query = self.request.GET.get("car_search_query")
         if query:
-            return Car.objects.filter(Q(model__icontains=query))
+            return Car.objects.filter(model__icontains=query)
         return Car.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = SearchForm(self.request.GET or None)
+        context["form"] = CarSearchForm(self.request.GET)
         return context
 
 
@@ -111,17 +113,18 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
     model = Driver
+    template_name = "taxi/driver_list.html"
     paginate_by = 5
 
     def get_queryset(self):
         query = self.request.GET.get("driver_search_query")
         if query:
-            return Driver.objects.filter(Q(username__icontains=query))
+            return Driver.objects.filter(username__icontains=query)
         return Driver.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = SearchForm(self.request.GET or None)
+        context["form"] = DriverSearchForm(self.request.GET)
         return context
 
 
