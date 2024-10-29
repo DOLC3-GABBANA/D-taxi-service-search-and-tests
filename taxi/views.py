@@ -45,7 +45,11 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         query = self.request.GET.get("manufacturer_search_query")
         if query:
-            return Manufacturer.objects.filter(name__icontains=query).order_by("name")
+            return (
+                Manufacturer.objects
+                .filter(name__icontains=query)
+                .order_by("name")
+            )
         return Manufacturer.objects.all().order_by("name")
 
     def get_context_data(self, **kwargs):
@@ -117,7 +121,11 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         query = self.request.GET.get("driver_search_query")
         if query:
-            return Driver.objects.filter(username__icontains=query).order_by("username")
+            return (
+                Driver.objects
+                .filter(username__icontains=query)
+                .order_by("username")
+            )
         return Driver.objects.all().order_by("username")
 
     def get_context_data(self, **kwargs):
